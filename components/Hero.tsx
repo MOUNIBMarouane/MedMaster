@@ -4,9 +4,14 @@ import { useEffect, useState } from "react";
 
 export default function Hero() {
   const [loaded, setLoaded] = useState(false);
+  const [signupCount, setSignupCount] = useState<number | null>(null);
 
   useEffect(() => {
     setLoaded(true);
+    fetch("/api/count")
+      .then((res) => res.json())
+      .then((data) => setSignupCount(data.count))
+      .catch(() => {});
   }, []);
 
   return (
@@ -21,27 +26,38 @@ export default function Hero() {
 
       <div className="section-container relative z-10 flex min-h-[100svh] flex-col justify-center pb-16 pt-20">
         <div className="mx-auto max-w-4xl text-center">
-          {/* Badge */}
+
+          {/* Live social proof badge */}
           <div
             className={`mb-8 transition-all duration-700 ${loaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}
           >
-            <span className="inline-flex items-center gap-2 rounded-full border border-brand-500/20 bg-brand-500/10 px-4 py-2 text-sm font-medium text-brand-300">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-brand-400" />
+            {signupCount && signupCount > 0 ? (
+              <span className="inline-flex items-center gap-2 rounded-full border border-brand-500/20 bg-brand-500/10 px-4 py-2 text-sm font-medium text-brand-300">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400 opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-brand-400" />
+                </span>
+                {signupCount.toLocaleString("fr-FR")} étudiants déjà inscrits · Accès anticipé ouvert
               </span>
-              Bientôt disponible à Casablanca
-            </span>
+            ) : (
+              <span className="inline-flex items-center gap-2 rounded-full border border-brand-500/20 bg-brand-500/10 px-4 py-2 text-sm font-medium text-brand-300">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400 opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-brand-400" />
+                </span>
+                Lancement imminent · Accès anticipé ouvert
+              </span>
+            )}
           </div>
 
           {/* Headline */}
           <h1
             className={`font-display text-display-xl text-white transition-all delay-100 duration-700 ${loaded ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"}`}
           >
-            Tes annales de médecine
+            50 000 QCMs. 11 ans d'annales.
             <br />
             <span className="bg-gradient-to-r from-brand-300 via-brand-400 to-brand-300 bg-clip-text text-transparent">
-              enfin dans une vraie app
+              Une seule app. Enfin.
             </span>
           </h1>
 
@@ -49,16 +65,19 @@ export default function Hero() {
           <p
             className={`mx-auto mt-6 max-w-xl text-lg leading-relaxed text-white/60 transition-all delay-200 duration-700 sm:text-xl ${loaded ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"}`}
           >
-            50&nbsp;000 questions · 11 ans d'annales · Filtrage par sujet précis
-            · Mode hors-ligne · Tout sur ton téléphone.
+            Filtre par sujet précis, révise hors-ligne, suis ta progression —
+            tout sur ton téléphone.{" "}
+            <span className="text-white/80">
+              La première vraie app de révision médicale au Maroc.
+            </span>
           </p>
 
-          {/* CTA */}
+          {/* CTAs */}
           <div
             className={`mt-10 flex flex-col items-center gap-4 transition-all delay-300 duration-700 sm:flex-row sm:justify-center ${loaded ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"}`}
           >
             <a href="#inscription" className="btn-primary w-full sm:w-auto">
-              Rejoindre la liste d'attente
+              Réserver mon accès anticipé
               <svg
                 className="h-4 w-4"
                 fill="none"
@@ -73,10 +92,20 @@ export default function Hero() {
                 />
               </svg>
             </a>
-            <span className="text-sm text-white/40">
-              Gratuit · Aucune carte requise
-            </span>
+            <a
+              href="#comment-ca-marche"
+              className="text-sm font-medium text-white/50 underline-offset-4 hover:text-white/80 hover:underline transition-colors"
+            >
+              Voir comment ça marche →
+            </a>
           </div>
+
+          {/* Trust line */}
+          <p
+            className={`mt-4 text-sm text-white/30 transition-all delay-400 duration-700 ${loaded ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"}`}
+          >
+            Gratuit · Aucun engagement · Aucune carte requise
+          </p>
 
           {/* Phone mockup */}
           <div
@@ -91,9 +120,7 @@ export default function Hero() {
                 <div className="overflow-hidden rounded-[2rem] bg-gradient-to-b from-surface-800 to-surface-900">
                   {/* Status bar */}
                   <div className="flex items-center justify-between px-6 pb-1 pt-3">
-                    <span className="text-xs font-medium text-white/50">
-                      9:41
-                    </span>
+                    <span className="text-xs font-medium text-white/50">9:41</span>
                     <div className="flex items-center gap-1">
                       <div className="h-2.5 w-4 rounded-sm border border-white/50">
                         <div className="m-0.5 h-1.5 w-2 rounded-sm bg-brand-400" />
@@ -112,9 +139,7 @@ export default function Hero() {
                         </p>
                       </div>
                       <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-500/20">
-                        <span className="text-xs font-bold text-brand-400">
-                          YA
-                        </span>
+                        <span className="text-xs font-bold text-brand-400">YA</span>
                       </div>
                     </div>
 
@@ -133,26 +158,12 @@ export default function Hero() {
                       <div className="rounded-xl border border-white/8 bg-white/5 p-3.5">
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className="text-xs font-semibold text-white">
-                              Anatomie du cœur
-                            </p>
-                            <p className="mt-0.5 text-[10px] text-white/40">
-                              127 questions · 11 annales
-                            </p>
+                            <p className="text-xs font-semibold text-white">Anatomie du cœur</p>
+                            <p className="mt-0.5 text-[10px] text-white/40">127 questions · 11 annales</p>
                           </div>
                           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand-500/20">
-                            <svg
-                              className="h-3.5 w-3.5 text-brand-400"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                              strokeWidth={2.5}
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M9 5l7 7-7 7"
-                              />
+                            <svg className="h-3.5 w-3.5 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                             </svg>
                           </div>
                         </div>
@@ -164,26 +175,12 @@ export default function Hero() {
                       <div className="rounded-xl border border-white/8 bg-white/5 p-3.5">
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className="text-xs font-semibold text-white">
-                              Système nerveux central
-                            </p>
-                            <p className="mt-0.5 text-[10px] text-white/40">
-                              93 questions · 8 annales
-                            </p>
+                            <p className="text-xs font-semibold text-white">Système nerveux central</p>
+                            <p className="mt-0.5 text-[10px] text-white/40">93 questions · 8 annales</p>
                           </div>
                           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand-500/20">
-                            <svg
-                              className="h-3.5 w-3.5 text-brand-400"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                              strokeWidth={2.5}
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M9 5l7 7-7 7"
-                              />
+                            <svg className="h-3.5 w-3.5 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                             </svg>
                           </div>
                         </div>
@@ -195,26 +192,12 @@ export default function Hero() {
                       <div className="rounded-xl border border-white/8 bg-white/5 p-3.5">
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className="text-xs font-semibold text-white">
-                              Physiologie rénale
-                            </p>
-                            <p className="mt-0.5 text-[10px] text-white/40">
-                              78 questions · 9 annales
-                            </p>
+                            <p className="text-xs font-semibold text-white">Physiologie rénale</p>
+                            <p className="mt-0.5 text-[10px] text-white/40">78 questions · 9 annales</p>
                           </div>
                           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand-500/20">
-                            <svg
-                              className="h-3.5 w-3.5 text-brand-400"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                              strokeWidth={2.5}
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M9 5l7 7-7 7"
-                              />
+                            <svg className="h-3.5 w-3.5 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                             </svg>
                           </div>
                         </div>

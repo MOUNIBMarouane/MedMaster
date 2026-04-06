@@ -34,6 +34,12 @@ CREATE POLICY "Allow anonymous select for count" ON waitlist
   FOR SELECT
   USING (true);
 
+-- Add telephone field (if not already present)
+ALTER TABLE waitlist ADD COLUMN IF NOT EXISTS telephone TEXT;
+
+-- Add internship specialty field (Stage Hub feature)
+ALTER TABLE waitlist ADD COLUMN IF NOT EXISTS specialite_stage TEXT;
+
 -- Optional: create a view for quick stats
 CREATE OR REPLACE VIEW waitlist_stats AS
 SELECT

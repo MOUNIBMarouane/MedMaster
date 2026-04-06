@@ -4,10 +4,10 @@ import { supabase } from "@/lib/supabase";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { prenom, email, telephone, ville, universite, annee, besoin } = body;
+    const { prenom, email, telephone, ville, universite, annee, besoin, specialite_stage } = body;
 
     // Validate required fields
-    if (!prenom || !email || !telephone || !ville || !universite || !annee || !besoin) {
+    if (!prenom || !email || !ville || !universite || !annee) {
       return NextResponse.json(
         { error: "Tous les champs sont obligatoires." },
         { status: 400 }
@@ -46,6 +46,7 @@ export async function POST(request: NextRequest) {
       universite,
       annee,
       besoin,
+      specialite_stage: specialite_stage || null,
       created_at: new Date().toISOString(),
     });
 

@@ -42,7 +42,7 @@ export default function HowItWorks() {
   const { ref, isVisible } = useScrollReveal<HTMLElement>();
 
   return (
-    <section ref={ref} className="relative py-20 sm:py-28">
+    <section id="comment-ca-marche" ref={ref} className="relative py-20 sm:py-28">
       <div className="section-container">
         <div
           className={`text-center transition-all duration-700 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}

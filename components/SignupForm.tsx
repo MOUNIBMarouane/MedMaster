@@ -33,7 +33,23 @@ const ANNEES = [
   "3ème année",
   "4ème année",
   "5ème année",
+  "Interne / 6ème année",
   "Pas encore inscrit(e)",
+];
+
+const SPECIALITES_STAGE = [
+  "Cardiologie",
+  "Neurologie",
+  "Chirurgie générale",
+  "Pédiatrie",
+  "Gynécologie-Obstétrique",
+  "Urgences",
+  "Médecine interne",
+  "Pneumologie",
+  "Dermatologie",
+  "ORL",
+  "Ophtalmologie",
+  "Autre",
 ];
 
 const BESOINS = [
@@ -62,6 +78,7 @@ export default function SignupForm() {
     universite: "",
     annee: "",
     besoin: "",
+    specialite_stage: "",
   });
 
   // Fetch signup count
@@ -103,7 +120,7 @@ export default function SignupForm() {
       setFormState("error");
       return;
     }
-    if (!formData.telephone.trim() || !/^(0[567]\d{8}|\+212[567]\d{8})$/.test(formData.telephone.replace(/\s/g, ''))) {
+    if (formData.telephone.trim() && !/^(0[567]\d{8}|\+212[567]\d{8})$/.test(formData.telephone.replace(/\s/g, ''))) {
       setErrorMsg("Numéro de téléphone invalide (ex: 0612345678).");
       setFormState("error");
       return;
@@ -123,12 +140,6 @@ export default function SignupForm() {
       setFormState("error");
       return;
     }
-    if (!formData.besoin) {
-      setErrorMsg("Dis-nous ce qui te manque le plus.");
-      setFormState("error");
-      return;
-    }
-
     setFormState("submitting");
     setErrorMsg("");
 
@@ -247,6 +258,14 @@ export default function SignupForm() {
               </h3>
               <p className="mt-2 text-[15px] leading-relaxed text-surface-800/60">
                 On te préviendra dès que MedMaster sera prêt à Casablanca.
+                {formData.specialite_stage && formData.specialite_stage !== "Autre" && (
+                  <>
+                    <br />
+                    <span className="font-semibold text-brand-600">
+                      Tu recevras en priorité le Guide de {formData.specialite_stage} !
+                    </span>
+                  </>
+                )}
                 <br />
                 Partage avec tes amis de promo pour qu'ils ne ratent rien.
               </p>
@@ -317,7 +336,8 @@ export default function SignupForm() {
                     htmlFor="telephone"
                     className="mb-1.5 block text-sm font-medium text-surface-800"
                   >
-                    Téléphone
+                    Téléphone{" "}
+                    <span className="font-normal text-surface-800/40">(optionnel)</span>
                   </label>
                   <input
                     id="telephone"
@@ -409,11 +429,41 @@ export default function SignupForm() {
                   </select>
                 </div>
 
+                {/* Prochain Stage (optional) */}
+                <div>
+                  <label
+                    htmlFor="specialite_stage"
+                    className="mb-1.5 block text-sm font-medium text-surface-800"
+                  >
+                    Prochain stage{" "}
+                    <span className="text-surface-800/40 font-normal">(optionnel)</span>
+                  </label>
+                  <p className="mb-2 text-xs text-brand-600 font-medium">
+                    → On t'envoie ton Guide de Stage en priorité avant les autres
+                  </p>
+                  <select
+                    id="specialite_stage"
+                    className="input-field appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22none%22%20stroke%3D%22%239ca3af%22%20stroke-width%3D%222%22%3E%3Cpath%20d%3D%22m4%206%204%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-[position:right_12px_center] bg-no-repeat pr-10"
+                    value={formData.specialite_stage}
+                    onChange={(e) => updateField("specialite_stage", e.target.value)}
+                    disabled={formState === "submitting"}
+                  >
+                    <option value="">Quelle spécialité ?</option>
+                    {SPECIALITES_STAGE.map((s) => (
+                      <option key={s} value={s}>
+                        {s}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
                 {/* Besoin - Radio cards */}
                 <div>
-                  <label className="mb-3 block text-sm font-medium text-surface-800">
-                    Qu'est-ce qui te manque le plus aujourd'hui ?
+                  <label className="mb-1.5 block text-sm font-medium text-surface-800">
+                    Qu'est-ce qui te manque le plus ?{" "}
+                    <span className="font-normal text-surface-800/40">(optionnel)</span>
                   </label>
+                  <p className="mb-3 text-xs text-surface-800/40">Aide-nous à construire la bonne app.</p>
                   <div className="space-y-2.5">
                     {BESOINS.map((besoin, i) => (
                       <label key={i} className="radio-card flex items-center gap-3">
@@ -460,6 +510,23 @@ export default function SignupForm() {
                 {errorMsg && (
                   <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3">
                     <p className="text-sm font-medium text-red-700">{errorMsg}</p>
+                  </div>
+                )}
+
+                {/* Urgency signal */}
+                {animatedCount > 0 && (
+                  <div className="flex items-center justify-center gap-2 rounded-xl bg-brand-50 px-4 py-3">
+                    <span className="relative flex h-2 w-2 shrink-0">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400 opacity-75" />
+                      <span className="relative inline-flex h-2 w-2 rounded-full bg-brand-500" />
+                    </span>
+                    <p className="text-center text-sm text-surface-800/70">
+                      Rejoins les{" "}
+                      <span className="font-semibold text-brand-600">
+                        {animatedCount.toLocaleString("fr-FR")}
+                      </span>{" "}
+                      étudiants qui attendent déjà
+                    </p>
                   </div>
                 )}
 
