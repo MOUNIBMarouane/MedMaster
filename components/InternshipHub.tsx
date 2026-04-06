@@ -626,7 +626,7 @@ export default function InternshipHub() {
                         ✅ La bonne réponse est : {spec.sampleOptions[spec.correctAnswer]}
                       </p>
                       <p className="mt-1 text-[12px] leading-relaxed text-emerald-700/70">
-                        L'app complète te donnera l'explication détaillée et te
+                        L&apos;app complète te donnera l&apos;explication détaillée et te
                         renverra vers la section correspondante du Guide de Stage.
                       </p>
                     </div>

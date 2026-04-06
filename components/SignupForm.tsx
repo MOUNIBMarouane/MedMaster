@@ -227,8 +227,8 @@ export default function SignupForm() {
               Sois parmi les premiers
             </h2>
             <p className="mt-3 text-base text-surface-800/60">
-              Inscris-toi maintenant et on te préviendra dès que l'app sera
-              prête. C'est gratuit, sans engagement.
+              Inscris-toi maintenant et on te préviendra dès que l&apos;app sera
+              prête. C&apos;est gratuit, sans engagement.
             </p>
           </div>
 
@@ -267,7 +267,7 @@ export default function SignupForm() {
                   </>
                 )}
                 <br />
-                Partage avec tes amis de promo pour qu'ils ne ratent rien.
+                Partage avec tes amis de promo pour qu&apos;ils ne ratent rien.
               </p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
@@ -439,7 +439,7 @@ export default function SignupForm() {
                     <span className="text-surface-800/40 font-normal">(optionnel)</span>
                   </label>
                   <p className="mb-2 text-xs text-brand-600 font-medium">
-                    → On t'envoie ton Guide de Stage en priorité avant les autres
+                    → On t&apos;envoie ton Guide de Stage en priorité avant les autres
                   </p>
                   <select
                     id="specialite_stage"
@@ -460,7 +460,7 @@ export default function SignupForm() {
                 {/* Besoin - Radio cards */}
                 <div>
                   <label className="mb-1.5 block text-sm font-medium text-surface-800">
-                    Qu'est-ce qui te manque le plus ?{" "}
+                    Qu&apos;est-ce qui te manque le plus ?{" "}
                     <span className="font-normal text-surface-800/40">(optionnel)</span>
                   </label>
                   <p className="mb-3 text-xs text-surface-800/40">Aide-nous à construire la bonne app.</p>
